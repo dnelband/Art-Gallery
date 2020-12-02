@@ -2,6 +2,7 @@ import logo from './logo.svg';
 import './App.css';
 
 function App() {
+
   return (
     <div className="app">
        <Header/>
@@ -11,21 +12,32 @@ function App() {
 }
 
 function Header() {
+  
+  const navArray = [
+    "home",
+    "paintings",
+    "sculptures",
+    "about",
+    "contact"
+  ]
+
+  const navItemsDisplay = navArray.map((menuItem) => (
+    <li><a href={"#" + menuItem}>{menuItem}</a></li>
+  ))
+  
   return (
     <header>
       <h1>Charlotte Karlbom</h1>
       <nav>
         <ul>
-          <li><a href="#gallery">Home</a></li>
-          <li><a href="#paintings">Paintings</a></li>
-          <li><a href="#sculptures">Sculptures</a></li>
-          <li><a href="#about">About</a></li>
-          <li><a href="#contact">Contact</a></li>
+         {navItemsDisplay}
         </ul>
       </nav>
     </header>
   )
 }
+
+
 
 function SectionsContainer() {
   return(
@@ -66,6 +78,7 @@ function GallerySection() {
   const galleryDisplay = imgArray.map((img) => (
     <img src={"img/stuff/" + img}/>
   ))
+
 
   return(
     <section id="gallery">
