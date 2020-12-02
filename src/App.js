@@ -1,18 +1,8 @@
-import logo from './logo.svg';
+import React from 'react';
 import './App.css';
 
-function App() {
+function App(props) {
 
-  return (
-    <div className="app">
-       <Header/>
-        <SectionsContainer/>
-    </div>
-  );
-}
-
-function Header() {
-  
   const navArray = [
     "home",
     "paintings",
@@ -21,9 +11,30 @@ function Header() {
     "contact"
   ]
 
-  const navItemsDisplay = navArray.map((menuItem) => (
-    <li><a href={"#" + menuItem}>{menuItem}</a></li>
-  ))
+  return (
+    <div className="app">
+      <Header
+        navArray={navArray} 
+      />
+      <SectionsContainer
+        navArray={navArray} 
+      />
+    </div>
+  );
+}
+
+function Header(props) {
+
+  const navItemsDisplay = props.navArray.map((menuItem) => {
+
+    let menuItemId = menuItem;
+
+    if (menuItem === "home") menuItemId = "gallery";
+
+    return (
+      <li><a href={"#" + menuItemId}>{menuItem}</a></li>
+    )
+  })
   
   return (
     <header>
@@ -37,29 +48,31 @@ function Header() {
   )
 }
 
+function SectionsContainer(props) {
 
+  const sectionsDisplay = props.navArray.map((section,index) => {
+      let sectionHtmlDisplay = (
+        <section id={section}>
+          <h2>{section}</h2>
+        </section>
+      )
+      if (section === "home") sectionHtmlDisplay = <GallerySection/>;
 
-function SectionsContainer() {
+      return (
+        <React.Fragment key={index}>
+          {sectionHtmlDisplay}
+        </React.Fragment>
+      )
+    }
+  )
   return(
     <main>
-      <GallerySection/>
-      <section id="paintings">
-        <h2>Paintings</h2>
-      </section>
-      <section id="sculptures">
-        <h2>Sculptures</h2>
-      </section>
-      <section id="about">
-        <h2>About</h2>
-      </section>
-      <section id="contact">
-        <h2>Contact</h2>
-      </section>
+     {sectionsDisplay}
     </main>
   )
 }
 
-function GallerySection() {
+function GallerySection(props) {
 
   const imgArray = [
     "61emzBXXDdL._AC_SY450_.jpg", 
@@ -87,4 +100,5 @@ function GallerySection() {
   )
 
 }
+
 export default App;

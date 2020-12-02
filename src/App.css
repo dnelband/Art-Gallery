@@ -61,9 +61,20 @@ section {
 }
 
 #gallery img {
-  max-width: 33%;
   max-height: 200px;
   flex: 1;
   display: inline-flex;
   margin-bottom: 5px;
+}
+
+@media (max-width:1145px){
+  #gallery img {
+    
+  }  
+}
+
+@media (max-width:921px){
+  #gallery img {
+
+  }  
 }
