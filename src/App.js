@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import './App.css';
 
 function App(props) {
@@ -74,6 +74,12 @@ function SectionsContainer(props) {
 
 function GallerySection(props) {
 
+  const [ showSlider, setShowSlider ] = useState(false)
+
+  const [ currentImgIndex, setCurrentImgIndex ] = useState(0)
+
+  console.log(currentImgIndex)
+
   const imgArray = [
     "61emzBXXDdL._AC_SY450_.jpg", 
     "223254_4897046472283_boti_stuff_a_loons_01.jpg",
@@ -88,17 +94,70 @@ function GallerySection(props) {
     "twitter_1024x512px_var1-300x150.png"
   ]
 
-  const galleryDisplay = imgArray.map((img) => (
-    <img src={"img/stuff/" + img}/>
+  function onGalleryImgClick(img, index){
+    setShowSlider(true)
+    setCurrentImgIndex(index)
+  }
+
+  const galleryDisplay = imgArray.map((img, index) => (
+    <img onClick={() => onGalleryImgClick(img, index)} src={"img/stuff/" + img}/>
   ))
 
+  function onOverlayClick() {
+    setShowSlider(false)
+  }
+    
+  let overlayDisplay;
+  if(showSlider === true){
+    overlayDisplay = (
+      <SlideShow
+        onOverlayClick={onOverlayClick}
+        imgArray={imgArray}
+        currentImgIndex={currentImgIndex}
+        setCurrentImgIndex={setCurrentImgIndex}
+      />
+    )
+  }
 
   return(
     <section id="gallery">
-      {galleryDisplay}
+      <div id="gallery-pictures">{galleryDisplay}</div>
+      {overlayDisplay}
     </section>
   )
+}
 
+function SlideShow(props) {
+  console.log("Slide Show Component");
+  console.log(props);
+
+  const [sliderWidth, setSliderWidth] = useState(window.innerWidth / 2)
+  console.log(sliderWidth)
+  
+  function onNavButtonClick(value) {
+
+    let indexValue = value;
+    if(value < 0) indexValue = props.imgArray.length -1;
+    else if(value === props.imgArray.length) indexValue = 0; 
+
+    props.setCurrentImgIndex(indexValue)
+  }
+
+  function onSlideShowImageLoad(e) {
+    setSliderWidth(e.target.clientWidth)
+    console.log(e.target.clientWidth);
+  }
+
+  return(
+    <div id="overlay">
+      <div id="overlay-black" onClick={props.onOverlayClick}></div>
+       <div id="slideshow" style={{marginLeft:"-" + ((sliderWidth / 2) + 100) + "px"}}>
+         <div className="nav-button left" onClick={() => onNavButtonClick(props.currentImgIndex -1)}></div>
+          <img src={"img/stuff/" + props.imgArray[props.currentImgIndex]} onLoad={(e) => onSlideShowImageLoad(e)}></img>
+          <div className="nav-button right" onClick={() => onNavButtonClick(props.currentImgIndex +1)}></div>
+       </div>
+    </div>
+  )
 }
 
 export default App;

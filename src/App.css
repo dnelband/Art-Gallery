@@ -9,7 +9,6 @@
 
 .app {
   font-family: 'Raleway';
-  background-color: black;
 }
 
 header {
@@ -55,6 +54,9 @@ section {
 
 #gallery {
   height: auto;
+}
+
+#gallery-pictures {
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
@@ -62,9 +64,9 @@ section {
 
 #gallery img {
   max-height: 200px;
-  flex: 1;
   display: inline-flex;
   margin-bottom: 5px;
+  cursor: pointer;
 }
 
 @media (max-width:1145px){
@@ -77,4 +79,57 @@ section {
   #gallery img {
 
   }  
+}
+
+#overlay {
+  background-color: rgba(0, 0, 0, 0.3);
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  z-index: 100;
+  top: 0;
+  left: 0;
+}
+
+#gallery #slideshow {
+  width: auto;
+  height: calc(100% - 150px);
+  text-align: center;
+  position: absolute;
+  z-index: 102;
+  left: 50%;
+  top: 150px;
+  padding: 0 100px;
+  margin-left: -100px;
+  min-width: 200px;
+  background-color: tomato;
+}
+
+#gallery #slideshow img {
+  margin: 0 auto;
+}
+
+.nav-button {
+  position: absolute;
+  width: 200px;
+  height: 100%;
+  cursor: pointer;
+  top: 0;
+}
+
+.nav-button.right {
+  right: 0;
+}
+
+.nav-button.left {
+  left: 0;
+}
+
+#overlay-black {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 101;
 }
