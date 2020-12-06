@@ -76,23 +76,86 @@ function SectionsContainer(props) {
 
 function ContactSection(props) {
 
+  const [name, setName] = useState("")
+  const [email, setEmail] = useState("")
+  const [message, setMessage] = useState("")
+  const [errors, setErrors] = useState([])
+
+  function onNameChange(e) {
+    setName(e.target.value)
+  }
+
+  function onEmailChange(e) {
+    setEmail(e.target.value)
+  }
+
+  function onMessageChange(e) {
+    setMessage(e.target.value)
+  }
+
+  function onSubmit(e) {
+    e.preventDefault();
+    let newErrors = [];
+
+    var letters = /^[A-Za-z]+$/;
+    if (name.length === 0) {
+      const nameError = {
+        msg: "Write something here", 
+        type: "name"
+      }
+      newErrors.push(nameError)
+    }
+    else if (!name.match(letters)){
+      const nameError = {
+        msg: "Please, don't use symbols", 
+        type: "name"
+      }
+      newErrors.push(nameError)
+    }
+
+    const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+      if (!re.test(String(email).toLowerCase())) {
+        const emailError = {
+          msg: "Please, use a valid email", 
+          type: "email"
+        }
+        newErrors.push(emailError)
+      }
+
+
+    setErrors(newErrors)
+    if (newErrors.length === 0) {
+      console.log("all good")
+    }
+
+  }
+
+  let nameErrorDisplay, emailErrorDisplay;
+  if (errors.length > 0) {
+    errors.forEach(function(error, index){
+     if (error.type === "name") nameErrorDisplay = <small>{error.msg}</small>
+      else if (error.type === "email") emailErrorDisplay = <small>{error.msg}</small>
+    })
+  }
+
   return(
     <section id="contact">
       <form>
         <div className="form-group">
-          <label for="exampleInputEmail1">Email address</label>
-          <input type="email" className="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter email"/>
-          <small id="emailHelp" className="form-text text-muted">We'll never share your email with anyone else.</small>
+          <label>Name</label>
+          <input type="text" value={name} className="form-control" placeholder="Enter Name" onChange={(e) => onNameChange(e)}/>
+          {nameErrorDisplay}
         </div>
         <div className="form-group">
-          <label for="exampleInputPassword1">Password</label>
-          <input type="password" className="form-control" id="exampleInputPassword1" placeholder="Password"/>
+          <label for="exampleInputEmail1">Email address</label>
+          <input type="email" value={email} className="form-control" placeholder="Enter email" onChange={(e) => onEmailChange(e)}/>
+          {emailErrorDisplay}
         </div>
-        <div className="form-check">
-          <input type="checkbox" className="form-check-input" id="exampleCheck1"/>
-          <label className="form-check-label" for="exampleCheck1">Check me out</label>
+        <div class="form-group">
+          <label>Your message</label>
+          <textarea className="form-control" rows="5" onChange={(e) => onMessageChange(e)}>{message}</textarea>
         </div>
-        <button type="submit" className="btn btn-primary">Submit</button>
+        <button type="submit" onClick={(e) => onSubmit(e)} className="btn btn-primary">Submit</button>
       </form>
     </section>
   )

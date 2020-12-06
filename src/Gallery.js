@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import './Gallery.css';
 
 function GallerySection(props) {
@@ -35,7 +35,12 @@ function GallerySection(props) {
     }
   
     const galleryDisplay = imgArray.map((img, index) => (
-      <img onClick={() => onGalleryImgClick(img, index)} src={"img/stuff/" + img}/>
+      <GalleryImage
+          img={img}
+          index={index}
+          onGalleryImgClick={onGalleryImgClick}
+          >
+      </GalleryImage>
     ))
   
     function onOverlayClick() {
@@ -59,6 +64,27 @@ function GallerySection(props) {
         <div id="gallery-pictures">{galleryDisplay}</div>
         {overlayDisplay}
       </section>
+    )
+  }
+
+  function GalleryImage(props) {
+
+    const [isVisible, setIsVisible] = useState(false)
+
+    useEffect(() => {
+        setTimeout(() => {
+            setIsVisible(true)            
+        }, ( props.index ) * 5);
+    },[])
+
+    let cssClass = "gallery-img-item";
+    
+    if (isVisible === true) cssClass += "  is-visible";
+
+    return(
+        <div className={cssClass}>
+          <img onClick={() => props.onGalleryImgClick(props.img, props.index)} src={"img/stuff/" + props.img}/>
+        </div>
     )
   }
   

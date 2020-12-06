@@ -15,7 +15,7 @@ header {
   position: fixed;
   width: 100%;
   top: 0;
-  background-color: white;
+  background-color:rgba(255,255,255,0.75);
 }
 
 header h1, nav {
@@ -45,6 +45,7 @@ nav a {
 nav a:hover {
   color: grey;
   font-style: italic;
+  text-decoration: none;
 }
 
 section {
