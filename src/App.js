@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import './App.css';
+import GallerySection from './Gallery'
 
 function App(props) {
 
@@ -57,6 +58,7 @@ function SectionsContainer(props) {
         </section>
       )
       if (section === "home") sectionHtmlDisplay = <GallerySection/>;
+      else if (section === "contact") sectionHtmlDisplay = <ContactSection/>;
 
       return (
         <React.Fragment key={index}>
@@ -72,91 +74,27 @@ function SectionsContainer(props) {
   )
 }
 
-function GallerySection(props) {
-
-  const [ showSlider, setShowSlider ] = useState(false)
-
-  const [ currentImgIndex, setCurrentImgIndex ] = useState(0)
-
-  console.log(currentImgIndex)
-
-  const imgArray = [
-    "61emzBXXDdL._AC_SY450_.jpg", 
-    "223254_4897046472283_boti_stuff_a_loons_01.jpg",
-    "fluffstore-fluffstuff-ai3-stoffwindel-ueberhose.png",
-    "kawaii-girls-stuff_74565-647.jpg",
-    "logo.png",
-    "maxresdefault.jpg",
-    "mezzanine_731.jpg",
-    "peppapig1711a.jpg",
-    "stuff.png",
-    "The-Stuff-poster.jpg",
-    "twitter_1024x512px_var1-300x150.png"
-  ]
-
-  function onGalleryImgClick(img, index){
-    setShowSlider(true)
-    setCurrentImgIndex(index)
-  }
-
-  const galleryDisplay = imgArray.map((img, index) => (
-    <img onClick={() => onGalleryImgClick(img, index)} src={"img/stuff/" + img}/>
-  ))
-
-  function onOverlayClick() {
-    setShowSlider(false)
-  }
-    
-  let overlayDisplay;
-  if(showSlider === true){
-    overlayDisplay = (
-      <SlideShow
-        onOverlayClick={onOverlayClick}
-        imgArray={imgArray}
-        currentImgIndex={currentImgIndex}
-        setCurrentImgIndex={setCurrentImgIndex}
-      />
-    )
-  }
+function ContactSection(props) {
 
   return(
-    <section id="gallery">
-      <div id="gallery-pictures">{galleryDisplay}</div>
-      {overlayDisplay}
+    <section id="contact">
+      <form>
+        <div className="form-group">
+          <label for="exampleInputEmail1">Email address</label>
+          <input type="email" className="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter email"/>
+          <small id="emailHelp" className="form-text text-muted">We'll never share your email with anyone else.</small>
+        </div>
+        <div className="form-group">
+          <label for="exampleInputPassword1">Password</label>
+          <input type="password" className="form-control" id="exampleInputPassword1" placeholder="Password"/>
+        </div>
+        <div className="form-check">
+          <input type="checkbox" className="form-check-input" id="exampleCheck1"/>
+          <label className="form-check-label" for="exampleCheck1">Check me out</label>
+        </div>
+        <button type="submit" className="btn btn-primary">Submit</button>
+      </form>
     </section>
-  )
-}
-
-function SlideShow(props) {
-  console.log("Slide Show Component");
-  console.log(props);
-
-  const [sliderWidth, setSliderWidth] = useState(window.innerWidth / 2)
-  console.log(sliderWidth)
-  
-  function onNavButtonClick(value) {
-
-    let indexValue = value;
-    if(value < 0) indexValue = props.imgArray.length -1;
-    else if(value === props.imgArray.length) indexValue = 0; 
-
-    props.setCurrentImgIndex(indexValue)
-  }
-
-  function onSlideShowImageLoad(e) {
-    setSliderWidth(e.target.clientWidth)
-    console.log(e.target.clientWidth);
-  }
-
-  return(
-    <div id="overlay">
-      <div id="overlay-black" onClick={props.onOverlayClick}></div>
-       <div id="slideshow" style={{marginLeft:"-" + ((sliderWidth / 2) + 100) + "px"}}>
-         <div className="nav-button left" onClick={() => onNavButtonClick(props.currentImgIndex -1)}></div>
-          <img src={"img/stuff/" + props.imgArray[props.currentImgIndex]} onLoad={(e) => onSlideShowImageLoad(e)}></img>
-          <div className="nav-button right" onClick={() => onNavButtonClick(props.currentImgIndex +1)}></div>
-       </div>
-    </div>
   )
 }
 
