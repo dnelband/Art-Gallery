@@ -3,40 +3,34 @@ import './Gallery.css';
 
 function GallerySection(props) {
 
+  const [pictures, setPictures] = useState([])
+
     const [ showSlider, setShowSlider ] = useState(false)
     const [ currentImgIndex, setCurrentImgIndex ] = useState(0)
   
     console.log(currentImgIndex)
-  
-    const imgArray = [
-     "1.jpg",
-     "2.jpg",
-     "3.jpg",
-     "4.jpg",
-     "5.jpg",
-     "6.jpg",
-     "7.jpg",
-     "8.jpg",
-     "9.jpg",
-     "1.jpg",
-     "2.jpg",
-     "3.jpg",
-     "4.jpg",
-     "5.jpg",
-     "6.jpg",
-     "7.jpg",
-     "8.jpg",
-     "9.jpg"
-    ]
+
+    useEffect(() => {
+      getPictures()
+    },[])
+
+    function getPictures() {
+      fetch('/pictures')
+      .then(res => res.text())
+      .then(res =>{
+        //console.log(JSON.parse(res));
+        setPictures(JSON.parse(res));
+      })
+    }
   
     function onGalleryImgClick(img, index){
       setShowSlider(true)
       setCurrentImgIndex(index)
     }
   
-    const galleryDisplay = imgArray.map((img, index) => (
+    const galleryDisplay = pictures.map((picture, index) => (
       <GalleryImage
-          img={img}
+          picture={picture}
           index={index}
           onGalleryImgClick={onGalleryImgClick}
           >
@@ -52,7 +46,7 @@ function GallerySection(props) {
       overlayDisplay = (
         <SlideShow
           onOverlayClick={onOverlayClick}
-          imgArray={imgArray}
+          pictures={pictures}
           currentImgIndex={currentImgIndex}
           setCurrentImgIndex={setCurrentImgIndex}
         />
@@ -83,38 +77,31 @@ function GallerySection(props) {
 
     return(
         <div className={cssClass}>
-          <img onClick={() => props.onGalleryImgClick(props.img, props.index)} src={"img/stuff/" + props.img}/>
+          <div className="image-container">
+             <img onClick={() => props.onGalleryImgClick(props.picture, props.index)} src={props.picture.filename}/>
+          </div>
         </div>
     )
   }
   
   function SlideShow(props) {
-    console.log("Slide Show Component");
-    console.log(props);
-  
-    const [sliderWidth, setSliderWidth] = useState(window.innerWidth / 2)
-    console.log(sliderWidth)
-    
+
+    const [nextIndex, setNextIndex] = useState(null)
+
     function onNavButtonClick(value) {
-  
       let indexValue = value;
-      if(value < 0) indexValue = props.imgArray.length -1;
-      else if(value === props.imgArray.length) indexValue = 0; 
-  
+      if(value < 0) indexValue = props.pictures.length -1;
+      else if(value === props.pictures.length) indexValue = 0; 
+      setNextIndex(indexValue)
       props.setCurrentImgIndex(indexValue)
-    }
-  
-    function onSlideShowImageLoad(e) {
-      setSliderWidth(e.target.clientWidth)
-      console.log(e.target.clientWidth);
     }
   
     return(
       <div id="overlay">
         <div id="overlay-black" onClick={props.onOverlayClick}></div>
-         <div id="slideshow" style={{marginLeft:"-" + ((sliderWidth / 2) + 100) + "px"}}>
+         <div id="slideshow">
            <div className="nav-button left" onClick={() => onNavButtonClick(props.currentImgIndex -1)}></div>
-            <img src={"img/stuff/" + props.imgArray[props.currentImgIndex]} onLoad={(e) => onSlideShowImageLoad(e)}></img>
+            <img src={props.pictures[props.currentImgIndex].filename}/>
             <div className="nav-button right" onClick={() => onNavButtonClick(props.currentImgIndex +1)}></div>
          </div>
       </div>

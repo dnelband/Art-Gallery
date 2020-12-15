@@ -1,0 +1,112 @@
+const Pool = require('pg').Pool
+const pool = new Pool({
+  user: 'postgres',
+  host: 'localhost',
+  database: 'Charlee',
+  password: 'Hallo',
+  port: 5432,
+})
+
+/** USERS */
+
+const getUsers = (request, response) => {
+    pool.query('SELECT * FROM users ORDER BY id ASC', (error, results) => {
+      if (error) {
+        throw error
+      }
+      response.status(200).json(results.rows)
+    })
+}
+
+const getUserById = (request, response) => {
+    const id = parseInt(request.params.id)
+    pool.query('SELECT * FROM users WHERE id = $1', [id], (error, results) => {
+      if (error) {
+        throw error
+      }
+      response.status(200).json(results.rows)
+    })
+}
+
+const createUser = (request, response) => {
+    const { name, email } = request.body
+    pool.query('INSERT INTO users (name, email) VALUES ($1, $2)', [name, email], (error, results) => {
+      if (error) {
+        throw error
+      }
+      response.status(201).send(`User added with ID: ${response.insertId}`)
+    })
+}
+
+const updateUser = (request, response) => {
+    const id = parseInt(request.params.id)
+    const { name, email } = request.body
+    pool.query(
+      'UPDATE users SET name = $1, email = $2 WHERE id = $3',
+      [name, email, id],
+      (error, results) => {
+        if (error) {
+          throw error
+        }
+        response.status(200).send(`User modified with ID: ${id}`)
+      }
+    )
+}
+
+const deleteUser = (request, response) => {
+    const id = parseInt(request.params.id)
+  
+    pool.query('DELETE FROM users WHERE id = $1', [id], (error, results) => {
+      if (error) {
+        throw error
+      }
+      response.status(200).send(`User deleted with ID: ${id}`)
+    })
+}
+
+/** /USERS */
+
+/** PICTURES */
+const getPictures = (request, response) => {
+    pool.query('SELECT * FROM pictures ORDER BY picture_id ASC', (error, results) => {
+      if (error) {
+        throw error
+      }
+      response.status(200).json(results.rows)
+    })
+}
+/** PICTURES */
+
+/**NAVIGATION */
+const getNavigation = (request, response) => {
+    pool.query('SELECT * FROM navigation ORDER BY nav_id ASC', (error, results) => {
+      if (error) {
+        throw error
+      }
+      response.status(200).json(results.rows)
+    })
+}
+/**NAVIGATION */
+
+/**MESSAGES */
+const createMessage = (request, response) => {
+    const { name, email, msg } = request.body
+    pool.query('INSERT INTO Messages (name, email, msg ) VALUES ($1, $2, $3 )', [name, email, msg ], (error, results) => {
+      if (error) {
+        throw error
+      }
+      response.status(201).send(`Message added with ID: ${response.insertId}`)
+    })
+}
+/**MESSAGE */
+
+module.exports = {
+    getUsers,
+    getUserById,
+    createUser,
+    updateUser,
+    deleteUser,
+    getPictures,
+    getNavigation,
+    createMessage
+}

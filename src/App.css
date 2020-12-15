@@ -53,3 +53,34 @@ section {
   padding: 150px 15px;
 }
 
+/* .profile-img-container {
+  text-align: center;
+}
+
+.profile-img-container .profile-img {
+  border-radius: 100%;
+  background-image: url("./profile.jpg");
+  height: 300px;
+  width: 300px;
+  background-size: cover;
+  background-position-x: -57px;
+  margin: 41px auto 46px auto;
+
+} */
+
+.title {
+  margin-bottom: 30px;
+}
+
+.profile-img-container {
+  overflow: hidden;
+}
+
+.profile-img-container img {
+  max-height: auto;
+  max-width: 100%;
+}
+
+.description {
+  margin: 0 62px 0 69px
+}

@@ -16,15 +16,7 @@
     flex: 1 0 25%;
   }*/
 
-  #gallery-pictures {
-    column-count: 3;
-  }
-
   .gallery-img-item {
-    padding: 8px;
-    box-shadow: 0 1px 2px rgba(0,0,0,0.5);
-    margin-bottom: 15px;
-    background: #f3f3f3;
     opacity: 0;
     transition: 1000ms;
   }
@@ -33,21 +25,16 @@
       opacity: 1;
   }
 
-  .gallery-img-item img {
-      max-width: 100%;
+  .gallery-img-item.is-visible .image-container {
+    box-shadow: 0 1px 2px rgba(0,0,0,0.5);
+    margin-bottom: 15px;
+    background: #f3f3f3;
   }
 
-  
-  @media (max-width:1145px){
-    #gallery img {
-      
-    }  
-  }
-  
-  @media (max-width:921px){
-    #gallery img {
-  
-    }  
+  .gallery-img-item img {
+      max-width: 100%;
+      width: calc(100% - 16px);
+      margin: 8px;
   }
   
   #overlay {
@@ -61,24 +48,38 @@
   }
   
   #gallery #slideshow {
-    width: auto;
-    height: calc(100% - 150px);
+    width: 100%;
+    height: calc(100% - 110px);
     text-align: center;
     position: absolute;
     z-index: 102;
-    left: 50%;
-    top: 150px;
-    padding: 0 100px;
-    margin-left: -100px;
-    min-width: 200px;
+    left: 0;
+    top: 110px;
     background-color: tomato;
     transition: 200ms;
   }
   
   #gallery #slideshow img {
     margin: 0 auto;
+    max-width: 100%;
+    max-height: 100%;
+    /*position: absolute;
+    transition: 1s;*/
   }
+
+  /*#gallery #slideshow img#next-image {
+    opacity: 0;
+  }
+
+  #gallery #slideshow img#next-image.in-transition {
+    opacity: 1;
+  }
+
+  #gallery #slideshow img.in-transition {
+    opacity: 0;
+  }*/
   
+
   .nav-button {
     position: absolute;
     width: 200px;
@@ -102,4 +103,35 @@
     width: 100%;
     height: 100%;
     z-index: 101;
+  }
+
+  #gallery-pictures {
+    column-count: 3;
+  }
+
+  /*Extra small screens*/
+  @media (max-width:576){
+    #gallery-pictures {
+      column-count: 1;
+    }  
+  }
+
+  /*Small screens*/
+  @media (min-width: 576px) and (max-width: 768px){
+    #gallery-pictures  {
+      column-count: 2;
+    }  
+  }
+
+  /*Medium + large screens*/
+  @media (min-width: 768px) and (max-width: 1200){
+    #gallery-pictures {
+    }  
+  }
+
+  /*Extra large screens*/
+  @media (min-width: 1400px) {
+    #gallery-pictures {
+      column-count: 4;
+    }  
   }
