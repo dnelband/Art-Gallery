@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import './App.css';
 import GallerySection from './Gallery'
 import $ from 'jquery';
+import SimpleReactLightbox from "simple-react-lightbox";
 
 function App(props) {
 
@@ -23,12 +24,15 @@ function App(props) {
 
   return (
     <div className="app">
-      <Header
-        navigation={navigation} 
-      />
-      <SectionsContainer
-        navigation={navigation} 
-      />
+      <SimpleReactLightbox>  
+        <Header
+          navigation={navigation} 
+        />
+        <SectionsContainer
+          navigation={navigation} 
+        />
+      </SimpleReactLightbox>  
+
     </div>
   );
 }

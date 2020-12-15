@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import './Gallery.css';
+import { SRLWrapper } from "simple-react-lightbox";
+
 
 function GallerySection(props) {
 
@@ -52,11 +54,20 @@ function GallerySection(props) {
         />
       )
     }
-  
+    const options={
+      thumbnails:{
+        showThumbnails:false
+      },
+      buttons: {
+        showDownloadButton: false
+      }
+    }
     return(
-      <section id="gallery">
-        <div id="gallery-pictures">{galleryDisplay}</div>
-        {overlayDisplay}
+      <section id="gallery"> 
+        <SRLWrapper 
+         options={options}>
+          <div id="gallery-pictures">{galleryDisplay}</div>
+        </SRLWrapper>
       </section>
     )
   }
@@ -78,7 +89,7 @@ function GallerySection(props) {
     return(
         <div className={cssClass}>
           <div className="image-container">
-             <img onClick={() => props.onGalleryImgClick(props.picture, props.index)} src={props.picture.filename}/>
+            <img src={props.picture.filename}/>
           </div>
         </div>
     )
