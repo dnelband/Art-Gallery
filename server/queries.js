@@ -75,6 +75,17 @@ const getPictures = (request, response) => {
       response.status(200).json(results.rows)
     })
 }
+
+const getPicturesByType = (request, response) => {
+  const picture_type = request.params.picture_type
+  console.log(picture_type)
+  pool.query('SELECT * FROM pictures WHERE picture_type = $1', [picture_type], (error, results) => {
+    if (error) {
+      throw error
+    }
+    response.status(200).json(results.rows)
+  })
+}
 /** PICTURES */
 
 /**NAVIGATION */
@@ -108,5 +119,6 @@ module.exports = {
     deleteUser,
     getPictures,
     getNavigation,
-    createMessage
+    createMessage,
+    getPicturesByType
 }

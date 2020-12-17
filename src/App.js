@@ -1,8 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import './App.css';
-import GallerySection from './Gallery'
+import GallerySection from './Gallery';
 import $ from 'jquery';
 import SimpleReactLightbox from "simple-react-lightbox";
+import {breakArrayIntoChunksHelper} from './helpers';
+import { Link, Route, Switch } from "react-router-dom";
+import Admin from './Admin';
 
 function App(props) {
 
@@ -21,18 +24,17 @@ function App(props) {
     })
   }
 
+  let headerDisplay = <Header navigation={navigation}/>
+  if (window.location.href.indexOf('/admin') !== -1) headerDisplay=''
 
   return (
     <div className="app">
-      <SimpleReactLightbox>  
-        <Header
-          navigation={navigation} 
-        />
+      <SimpleReactLightbox>
+        {headerDisplay}
         <SectionsContainer
           navigation={navigation} 
         />
       </SimpleReactLightbox>  
-
     </div>
   );
 }
@@ -42,7 +44,7 @@ function Header(props) {
   const navItemsDisplay = props.navigation.map((menuItem) => {
 
     return (
-      <li><a href={menuItem.nav_link}>{menuItem.title}</a></li>
+      <li><Link to={menuItem.nav_link}>{menuItem.title}</Link></li>
     )
   })
   
@@ -66,9 +68,31 @@ function SectionsContainer(props) {
           <h2>{section.title}</h2>
         </section>
       )
-      if (section.title === "home") sectionHtmlDisplay = <GallerySection/>;
-      else if (section.title === "contact") sectionHtmlDisplay = <ContactSection/>;
-      else if (section.title === "about") sectionHtmlDisplay = <AboutSection/>;
+      if (section.title === "home") {
+        sectionHtmlDisplay = (
+          <Route exact path="/"><GallerySection/></Route>
+        )
+      }
+      else if (section.title === "paintings") {
+        sectionHtmlDisplay = (
+          <Route exact path="/paintings"><PaintingsSection/></Route>
+        )
+      }
+      else if (section.title === "sculptures") {
+        sectionHtmlDisplay = (
+          <Route exact path="/sculptures"><SculpturesSection/></Route>
+        )
+      }
+      else if (section.title === "contact") {
+        sectionHtmlDisplay = (
+          <Route exact path="/contact"><ContactSection/></Route>
+        )
+      }
+      else if (section.title === "about") {
+        sectionHtmlDisplay = (
+          <Route exact path="/about"><AboutSection/></Route>
+        )
+      }
 
       return (
         <React.Fragment key={index}>
@@ -77,10 +101,93 @@ function SectionsContainer(props) {
       )
     }
   )
+
+  const adminSectionDisplay = (
+    <Route exact path="/admin">
+      <Admin/>
+    </Route>
+  )
   return(
     <main>
      {sectionsDisplay}
+     {adminSectionDisplay}
     </main>
+  )
+}
+
+function PaintingsSection(props) {
+
+  const [paintings, setPaintings] = useState([])
+
+  useEffect(() => {
+    getPaintings()
+  },[])
+
+  function getPaintings() {
+    fetch('/pictures/paintings')
+    .then(res => res.text())
+    .then(res =>{
+      const newPaintings = breakArrayIntoChunksHelper(2, JSON.parse(res))
+      setPaintings(newPaintings);
+    })
+  }
+
+  const galleryDisplay = paintings.map((subArray) => (
+    <div className="container">
+      {
+        subArray.map((painting) => (
+          <div className="box">
+            <img src={painting.filename}/>
+            <span>text</span>
+          </div>
+        ))
+      }
+    </div>
+  ))
+
+
+
+  return(
+    <section id="paintings">
+      {galleryDisplay}
+    </section>
+  )
+}
+
+function SculpturesSection(props) {
+
+  const [sculptures, setSculptures] = useState([])
+
+  useEffect(() => {
+    getSculptures()
+  },[])
+
+  function getSculptures() {
+    fetch('/pictures/sculpture')
+    .then(res => res.text())
+    .then(res =>{
+      const newSculptures = breakArrayIntoChunksHelper(2, JSON.parse(res))
+      setSculptures(newSculptures);
+    })
+  }
+ 
+  const galleryDisplay = sculptures.map((subArray) => (
+    <div className="container">
+    {
+      subArray.map((sculpture) => (
+        <div className="box">
+          <img src={sculpture.filename}/>
+          <span>text</span>
+        </div>
+        ))
+      }
+    </div>
+  ))
+
+  return(
+    <section id="sculptures">
+      {galleryDisplay}
+    </section>
   )
 }
 

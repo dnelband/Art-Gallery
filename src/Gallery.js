@@ -76,11 +76,9 @@ function GallerySection(props) {
 
     const [isVisible, setIsVisible] = useState(false)
 
-    useEffect(() => {
-        setTimeout(() => {
-            setIsVisible(true)            
-        }, ( props.index ) * 5);
-    },[])
+    function onGalleryImgLoad() {
+      setIsVisible(true)            
+    }
 
     let cssClass = "gallery-img-item";
     
@@ -89,7 +87,7 @@ function GallerySection(props) {
     return(
         <div className={cssClass}>
           <div className="image-container">
-            <img src={props.picture.filename}/>
+            <img onLoad={onGalleryImgLoad} src={props.picture.filename}/>
           </div>
         </div>
     )
@@ -118,5 +116,7 @@ function GallerySection(props) {
       </div>
     )
   }
+
+
 
   export default GallerySection;
