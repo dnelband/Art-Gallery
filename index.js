@@ -28,8 +28,10 @@ app.post('/users', db.createUser)
 app.put('/users/:id', db.updateUser)
 app.delete('/users/:id', db.deleteUser)
 app.get('/pictures', db.getPictures)
+app.get('/pictures/:picture_type', db.getPicturesByType)
 app.get('/navigation', db.getNavigation)
 app.post('/messages', db.createMessage)
+app.get('/messages', db.getMessages)
 
 app.listen(process.env.PORT || 8080, () => {
   console.log('YO YO YO BIACH');

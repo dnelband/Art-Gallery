@@ -3,6 +3,7 @@ import './App.css';
 import GallerySection from './Gallery';
 import $ from 'jquery';
 import SimpleReactLightbox from "simple-react-lightbox";
+import { SRLWrapper } from "simple-react-lightbox";
 import {breakArrayIntoChunksHelper} from './helpers';
 import { Link, Route, Switch } from "react-router-dom";
 import Admin from './Admin';
@@ -68,30 +69,38 @@ function SectionsContainer(props) {
           <h2>{section.title}</h2>
         </section>
       )
-      if (section.title === "home") {
+      
+      switch (section.title) {
+        case 'home':
+          sectionHtmlDisplay = (
+            <Route exact path="/"><GallerySection/></Route>
+          )
+          break;
+        case 'paintings':
+          sectionHtmlDisplay = (
+            <Route exact path="/paintings"><PaintingsSection/></Route>
+          )
+          break;
+        case 'sculptures':
+          sectionHtmlDisplay = (
+            <Route exact path="/sculptures"><SculpturesSection/></Route>
+          )
+          break;
+        case 'contact':
+          sectionHtmlDisplay = (
+            <Route exact path="/contact"><ContactSection/></Route>
+          )
+          break;
+        case 'about':
+          sectionHtmlDisplay = (
+            <Route exact path="/about"><AboutSection/></Route>
+          )
+          break;
+        default:
         sectionHtmlDisplay = (
           <Route exact path="/"><GallerySection/></Route>
         )
-      }
-      else if (section.title === "paintings") {
-        sectionHtmlDisplay = (
-          <Route exact path="/paintings"><PaintingsSection/></Route>
-        )
-      }
-      else if (section.title === "sculptures") {
-        sectionHtmlDisplay = (
-          <Route exact path="/sculptures"><SculpturesSection/></Route>
-        )
-      }
-      else if (section.title === "contact") {
-        sectionHtmlDisplay = (
-          <Route exact path="/contact"><ContactSection/></Route>
-        )
-      }
-      else if (section.title === "about") {
-        sectionHtmlDisplay = (
-          <Route exact path="/about"><AboutSection/></Route>
-        )
+          break;
       }
 
       return (
@@ -145,11 +154,21 @@ function PaintingsSection(props) {
     </div>
   ))
 
-
+  const options={
+    thumbnails:{
+      showThumbnails:false
+    },
+    buttons: {
+      showDownloadButton: false
+    }
+  }
 
   return(
     <section id="paintings">
-      {galleryDisplay}
+        <SRLWrapper 
+         options={options}>
+          <div id="gallery-pictures">{galleryDisplay}</div>
+        </SRLWrapper>
     </section>
   )
 }
@@ -184,9 +203,21 @@ function SculpturesSection(props) {
     </div>
   ))
 
+  const options={
+    thumbnails:{
+      showThumbnails:false
+    },
+    buttons: {
+      showDownloadButton: false
+    }
+  }
+
   return(
     <section id="sculptures">
-      {galleryDisplay}
+        <SRLWrapper 
+         options={options}>
+          <div id="gallery-pictures">{galleryDisplay}</div>
+        </SRLWrapper>
     </section>
   )
 }

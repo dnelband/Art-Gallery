@@ -109,6 +109,15 @@ const createMessage = (request, response) => {
       response.status(201).send(`Message added with ID: ${response.insertId}`)
     })
 }
+
+const getMessages = (request, response) => {
+  pool.query('SELECT * FROM messages ORDER BY msg_id ASC', (error, results) => {
+    if (error) {
+      throw error
+    }
+    response.status(200).json(results.rows)
+  })
+}
 /**MESSAGE */
 
 module.exports = {
@@ -120,5 +129,6 @@ module.exports = {
     getPictures,
     getNavigation,
     createMessage,
+    getMessages,
     getPicturesByType
 }
