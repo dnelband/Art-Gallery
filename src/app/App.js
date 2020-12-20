@@ -1,12 +1,13 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, Suspense, lazy } from 'react';
 import './App.css';
-import GallerySection from './Gallery';
+import GallerySection from './gallery/Gallery';
 import $ from 'jquery';
 import SimpleReactLightbox from "simple-react-lightbox";
 import { SRLWrapper } from "simple-react-lightbox";
 import {breakArrayIntoChunksHelper} from './helpers';
 import { Link, Route, Switch } from "react-router-dom";
-import Admin from './Admin';
+import 'semantic-ui-css/semantic.min.css';
+import Admin from './admin/Admin';
 
 function App(props) {
 
@@ -42,10 +43,9 @@ function App(props) {
 
 function Header(props) {
 
-  const navItemsDisplay = props.navigation.map((menuItem) => {
-
+  const navItemsDisplay = props.navigation.map((menuItem, index) => {
     return (
-      <li><Link to={menuItem.nav_link}>{menuItem.title}</Link></li>
+      <li key={index}><Link to={menuItem.nav_link}>{menuItem.title}</Link></li>
     )
   })
   
@@ -112,8 +112,8 @@ function SectionsContainer(props) {
   )
 
   const adminSectionDisplay = (
-    <Route exact path="/admin">
-      <Admin/>
+    <Route path="/admin">
+        <Admin/>
     </Route>
   )
   return(

@@ -84,8 +84,20 @@ const getPicturesByType = (request, response) => {
       throw error
     }
     response.status(200).json(results.rows)
-  })
+  }) 
 }
+
+const createPicture = (request, response) => {
+  const { caption, description, filename, price, picture_type } = request.body
+  console.log(caption, description, filename, price, picture_type)
+  pool.query('INSERT INTO pictures (caption, description, filename, price, picture_type ) VALUES ($1, $2, $3, $4, $5 )', [caption, description, filename, price, picture_type], (error, results) => {
+    if (error) {
+      throw error   
+    }
+    response.status(201).send(`Picture added with ID: ${response.insertId}`)
+  })
+} 
+
 /** PICTURES */
 
 /**NAVIGATION */
@@ -120,6 +132,17 @@ const getMessages = (request, response) => {
 }
 /**MESSAGE */
 
+/**ALL TABLES */
+const getTableNames = (request, response) => {
+  pool.query("SELECT * FROM information_schema.tables WHERE table_schema = 'public'", (error, results) => {
+    if (error) {
+      throw error
+    }
+    response.status(200).json(results.rows)
+  })
+}
+/**ALL TABLES */
+
 module.exports = {
     getUsers,
     getUserById,
@@ -127,8 +150,10 @@ module.exports = {
     updateUser,
     deleteUser,
     getPictures,
+    createPicture,
     getNavigation,
     createMessage,
     getMessages,
-    getPicturesByType
+    getPicturesByType,
+    getTableNames
 }

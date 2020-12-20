@@ -1,0 +1,33 @@
+#file-upload-container img {
+  width: 500px;
+  height: 500px;
+  object-fit: contain;
+}
+#file-upload-container .progessBar {
+  height: 1rem;
+  width: 0%;
+  background-color: #44d4e7;
+  color: white;
+  padding: 2px;
+}
+#file-upload-container .file-upload {
+  box-shadow: 2px 2px 2px 2px #ccc;
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  font-size: 1rem;
+}
+#file-upload-container input,
+#file-upload-container div,
+#file-upload-container button {
+  margin-top: 2rem;
+}
+#file-upload-container .upbutton {
+  width: 5rem;
+  padding: 0.5rem;
+  background-color: #2767e9;
+  color: aliceblue;
+  font-size: 1rem;
+  cursor: pointer;
+}

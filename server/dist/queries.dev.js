@@ -95,6 +95,23 @@ var getPicturesByType = function getPicturesByType(request, response) {
     response.status(200).json(results.rows);
   });
 };
+
+var createPicture = function createPicture(request, response) {
+  var _request$body3 = request.body,
+      caption = _request$body3.caption,
+      description = _request$body3.description,
+      filename = _request$body3.filename,
+      price = _request$body3.price,
+      picture_type = _request$body3.picture_type;
+  console.log(caption, description, filename, price, picture_type);
+  pool.query('INSERT INTO pictures (caption, description, filename, price, picture_type ) VALUES ($1, $2, $3, $4, $5 )', [caption, description, filename, price, picture_type], function (error, results) {
+    if (error) {
+      throw error;
+    }
+
+    response.status(201).send("Picture added with ID: ".concat(response.insertId));
+  });
+};
 /** PICTURES */
 
 /**NAVIGATION */
@@ -115,10 +132,10 @@ var getNavigation = function getNavigation(request, response) {
 
 
 var createMessage = function createMessage(request, response) {
-  var _request$body3 = request.body,
-      name = _request$body3.name,
-      email = _request$body3.email,
-      msg = _request$body3.msg;
+  var _request$body4 = request.body,
+      name = _request$body4.name,
+      email = _request$body4.email,
+      msg = _request$body4.msg;
   pool.query('INSERT INTO Messages (name, email, msg ) VALUES ($1, $2, $3 )', [name, email, msg], function (error, results) {
     if (error) {
       throw error;
@@ -139,6 +156,20 @@ var getMessages = function getMessages(request, response) {
 };
 /**MESSAGE */
 
+/**ALL TABLES */
+
+
+var getTableNames = function getTableNames(request, response) {
+  pool.query("SELECT * FROM information_schema.tables WHERE table_schema = 'public'", function (error, results) {
+    if (error) {
+      throw error;
+    }
+
+    response.status(200).json(results.rows);
+  });
+};
+/**ALL TABLES */
+
 
 module.exports = {
   getUsers: getUsers,
@@ -147,8 +178,10 @@ module.exports = {
   updateUser: updateUser,
   deleteUser: deleteUser,
   getPictures: getPictures,
+  createPicture: createPicture,
   getNavigation: getNavigation,
   createMessage: createMessage,
   getMessages: getMessages,
-  getPicturesByType: getPicturesByType
+  getPicturesByType: getPicturesByType,
+  getTableNames: getTableNames
 };
