@@ -14,18 +14,15 @@ app.use(
     extended: true,
   })
 )
+
 app.use(express.static(__dirname + '/build'));
+app.use(express.static(__dirname + '/public'))
+
 app.use(fileUpload());
 
-
-app.get('/', function (req, res) {
+app.get(['/', '/admin/','/sculptures/','/paintings','/contact'], function (req, res) {
   res.sendFile(path.join(__dirname, 'build', 'index.html'));
 });
-
-app.get('/admin/', function (req, res) {
-  res.sendFile(path.join(__dirname, 'build', 'index.html'));
-});
-
 
 app.get('/users', db.getUsers)
 app.get('/users/:id', db.getUserById)
@@ -53,13 +50,13 @@ app.post('/upload', (req, res) => {
       // accessing the file
   const myFile = req.files.file;
   //  mv() method places the file inside public directory
-  myFile.mv(`${__dirname}/${myFile.name}`, function (err) {
+  myFile.mv(`${__dirname}/public/Img/pictures/${myFile.name}`, function (err) {
       if (err) {
           console.log(err)
           return res.status(500).send({ msg: "Error occured" });
       }
       // returing the response with file path and name
-      return res.send({name: myFile.name, path: `/${myFile.name}`});
+      return res.send({name: myFile.name, path: `/Img/pictures/${myFile.name}`});
   });
 })
 
